@@ -1,0 +1,68 @@
+Translator from c++23 to python3
+Pretty much explanatory what is supposed to do
+
+Supports:
+    - variables
+    - if else statements
+    - while loops
+    - for loops
+    - for each loops
+    - objects
+    - classes
+    - multiple files -> if in your c++ file you include another file ex: #include "myHeaderFile.hpp", this program will seach for that file and translate it as well, unfortunatlly its contents will not be called corectlly since python has the syntax: myHeaderFile.myFunctionFromHeader
+    - arrays 
+    - functions
+    - print statement(console)
+    - read statement(console)
+    - c++ style comments => //. Dont make them inline. ex: int a;//comment not good
+
+Features:
+    - 1 function call is enough for the program to work
+    - easily expandable: Want to support another library? Just add it to the header table and any functions to the translationTable ex: std::pow => math.pow
+    - easily adding new keywords. Just add them to the keyword table with their translation
+    - easily adding new functions. Create a function and add it to the function table and the program does the rest
+    - easily banning words. Want to ban the word 'noexcept'? Just add it to the banned words
+
+Doesn't support:
+    - any swich statements(python doesnt have swiches(LOL))
+    - any literals. ex 31.3f, 24.554d. Pythond doesnt support the f or d literals
+    - the ',' opperand. Dont declare variables like: "int a = 3, b = 5". Instead do this: "int a = 3;
+                                                                                           int b = 5;"
+    - anything that is not a primitive type. Anything like std::unordored_map<> will not be supported
+    - premade object functions. Ex: std::string s = "example"; int size = s.size(); !!! This will break. To achive this in python you need to use the function: range(s). Different data types have different names. This can only be achived if the data type is stored. This is beyond the porpose of this translater. However custom made classes will be able to call without problems their methods
+
+Notes:
+    - for nested statements please use '{' and '}' operands even if you have 1 statement. Example:
+    Do:
+        while()
+        {
+            while()
+            {
+                std::cout << 'c';
+            }
+        }
+    Do:
+        while()
+            std::cout << 'c';
+    
+    Dont:
+        while()
+            while()
+                std::cout << 'c';
+
+    - there are extra spaces... not a problem
+    - methods with no parameters will have an extra ',', but this is ignored by the compiler so it doesnt matter if it is there
+    - we created 2 filesfor easy testing called translateFile.cpp and translateFile2.cpp. You can add your own
+    - usage: either ./main src/yourFile.cpp or edit main code and add the file path
+    - all the compilation was done using cmake. All testing and compiling was done on linux. Compiling on windows might result in UB (undefined behavior)
+
+How it works:
+    - the method writting gets the path of a file. It will create a file with the same name but with a '.py' extension. It will retain the cpp ending to indicate this file is made using this program
+    - writting reads the file char by char and constructs words. All the decisions are made inside the aforementioned function. For this it uses an unordered_map that has keywords as values and the respective function as value. Depending on the word multiple things can happen: 
+        1. It can write the character as is
+        2. It can write the word as is
+        3. It can translate the word if possible then write it
+        4. It can decide that the whole line is needed for this opperation and will read the whole line
+        5. It can delete one or more characters from the
+    - writting also calls itself recursivly if it detects another file that needs to be translated
+    - main is on line 67!!

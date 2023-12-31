@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.cpp.dir/src/main.cpp.o -o main.cpp  -lglut -lGL -lGLU -lX11 -lXxf86vm -lXrandr -lpthread -lXi -lGLEW -lglfw -lsfml-audio 
